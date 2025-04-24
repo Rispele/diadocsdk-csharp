@@ -363,6 +363,14 @@ namespace Diadoc.Api
 			return diadocHttpApi.PostMessagePatch(authToken, patch, operationId);
 		}
 
+		public MessagePatch PostMessagePatchV2(string authToken, MessagePatchToPostV2 patch, string operationId = null)
+		{
+			if (authToken == null) throw new ArgumentNullException(nameof(authToken));
+			if (patch == null) throw new ArgumentNullException(nameof(patch));
+
+			return diadocHttpApi.PostMessagePatchV2(authToken, patch, operationId);
+		}
+
 		public MessagePatch PostTemplatePatch(string authToken, string boxId, string templateId, TemplatePatchToPost patch, string operationId = null)
 		{
 			if (authToken == null) throw new ArgumentNullException("authToken");

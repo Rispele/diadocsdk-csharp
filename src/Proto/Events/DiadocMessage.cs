@@ -979,7 +979,177 @@ namespace Diadoc.Api.Proto.Events
 			return (RecipientTitleAttachment)attachment;
 		}
 	}
+	
+	[ComVisible(true)]
+	[Guid("4A90565D-A01E-4CA0-9877-580F86EA70FF")]
+	public interface IMessagePatchToPostV2
+	{
+		string BoxId { get; set; }
+		string MessageId { get; set; }
+		void AddReceipt([MarshalAs(UnmanagedType.IDispatch)] object receipt);
+		void AddCorrectionRequest([MarshalAs(UnmanagedType.IDispatch)] object correctionRequest);
+		void AddUniversalMessage([MarshalAs(UnmanagedType.IDispatch)] object universalMessage);
+		void AddSignature([MarshalAs(UnmanagedType.IDispatch)] object signature);
 
+		void AddResolution([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddResolutionRequestAttachment([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddRevocationRequestAttachment([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+
+		void AddXmlSignatureRejectionAttachment([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddResolutionRouteAssignment([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddResolutoinRouteRemoval([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddRecipientTitle([MarshalAs(UnmanagedType.IDispatch)] object attachment);
+		void AddCustomDataPatch([MarshalAs(UnmanagedType.IDispatch)] object editingPatch);
+		void AddEditingPatch([MarshalAs(UnmanagedType.IDispatch)] object editingPatch);
+	}
+	
+	[ComVisible(true)]
+	[ProgId("Diadoc.Api.MessagePatchToPostV2")]
+	[Guid("43DD1C61-6197-41C0-9E3E-443629453195")]
+	[ClassInterface(ClassInterfaceType.None)]
+	[ComDefaultInterface(typeof(IMessagePatchToPostV2))]
+	public partial class MessagePatchToPostV2 : SafeComObject, IMessagePatchToPostV2
+	{
+		public void AddReceipt(object receipt)
+		{
+			Receipts.Add((ReceiptAttachment)receipt);
+		}
+
+		public void AddCorrectionRequest(object correctionRequest)
+		{
+			CorrectionRequests.Add((CorrectionRequestAttachment)correctionRequest);
+		}
+
+		public void AddUniversalMessage(object universalMessage)
+		{
+			UniversalMessages.Add((UniversalMessageAttachment)universalMessage);
+		}
+
+		public void AddSignature(object signature)
+		{
+			Signatures.Add((DocumentSignature)signature);
+		}
+
+		public void AddResolution(object attachment)
+		{
+			Resolutions.Add((ResolutionAttachment)attachment);
+		}
+
+		public void AddResolutionRequestAttachment(object attachment)
+		{
+			ResolutionRequests.Add((ResolutionRequestAttachment)attachment);
+		}
+
+		public void AddResolutionRequestCancellationAttachment(object attachment)
+		{
+			ResolutionRequestCancellations.Add((ResolutionRequestCancellationAttachment)attachment);
+		}
+
+		public void AddResolutionRequestDenialAttachment(object attachment)
+		{
+			ResolutionRequestDenials.Add((ResolutionRequestDenialAttachment)attachment);
+		}
+
+		public void AddResolutionRequestDenialCancellationAttachment(object attachment)
+		{
+			ResolutionRequestDenialCancellations.Add((ResolutionRequestDenialCancellationAttachment)attachment);
+		}
+
+		public void AddRevocationRequestAttachment(object attachment)
+		{
+			RevocationRequests.Add((RevocationRequestAttachment)attachment);
+		}
+
+		public void AddXmlSignatureRejectionAttachment(object attachment)
+		{
+			XmlSignatureRejections.Add((XmlSignatureRejectionAttachment)attachment);
+		}
+
+		public void AddResolutionRouteAssignment(object attachment)
+		{
+			ResolutionRouteAssignments.Add((ResolutionRouteAssignment)attachment);
+		}
+
+		public void AddResolutoinRouteRemoval(object attachment)
+		{
+			ResolutionRouteRemovals.Add((ResolutionRouteRemoval)attachment);
+		}
+
+		public void AddRecipientTitle(object attachment)
+		{
+			RecipientTitles.Add(Convert(attachment));
+		}
+
+		public void AddCustomDataPatch(object editingPatch)
+		{
+			CustomDataPatches.Add((CustomDataPatch)editingPatch);
+		}
+
+		public void AddEditingPatch(object editingPatch)
+		{
+			EditingPatches.Add((EditingPatch)editingPatch);
+		}
+
+		private RecipientTitleAttachment Convert(object attachment)
+		{
+			var receiptAttachment = attachment as ReceiptAttachment;
+			if (receiptAttachment != null)
+			{
+				var recipientTitleAttachment = new RecipientTitleAttachment
+				{
+					ParentEntityId = receiptAttachment.ParentEntityId,
+					SignedContent = receiptAttachment.SignedContent,
+					NeedReceipt = false
+				};
+
+				foreach (var label in receiptAttachment.Labels)
+				{
+					recipientTitleAttachment.AddLabel(label);
+				}
+
+				return recipientTitleAttachment;
+			}
+
+			return (RecipientTitleAttachment)attachment;
+		}
+	}
+
+	[ComVisible(true)]
+	[Guid("C845F9EB-52A4-4348-81FE-560F670B2ED2")]
+	public interface IUniversalMessageAttachment
+	{
+		string ParentEntityId { get; set; }
+		UnsignedContent UniversalMessageContent { get; set; }
+		void SetUniversalMessageContent([MarshalAs(UnmanagedType.IDispatch)] object content);
+		void SetUniversalMessageCodeGroup([MarshalAs(UnmanagedType.IDispatch)] object codeGroup);
+		ReadonlyList LabelsList { get; }
+		void AddLabel(string label);
+	}
+
+	[ComVisible(true)]
+	[ProgId("Diadoc.Api.ReceiptAttachment")]
+	[Guid("4B223BA3-C013-42E4-A146-615F5855AD0B")]
+	[ClassInterface(ClassInterfaceType.None)]
+	[ComDefaultInterface(typeof(IUniversalMessageAttachment))]
+	public partial class UniversalMessageAttachment : SafeComObject, IUniversalMessageAttachment
+	{
+		public void SetUniversalMessageContent(object content)
+		{
+			UniversalMessageContent = (UnsignedContent)content;
+		}
+
+		public void SetUniversalMessageCodeGroup(object codeGroup)
+		{
+			CodeGroup = (UniversalMessageCodeGroup)codeGroup;
+		}
+
+		public ReadonlyList LabelsList => new ReadonlyList(Labels);
+
+		public void AddLabel(string label)
+		{
+			Labels.Add(label);
+		}
+	}
 
 	[ComVisible(true)]
 	[Guid("10AC1159-A121-4F3E-9437-7CF22A1B60A1")]

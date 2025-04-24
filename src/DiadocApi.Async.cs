@@ -289,6 +289,14 @@ namespace Diadoc.Api
 			return diadocHttpApi.PostMessagePatchAsync(authToken, patch, operationId);
 		}
 
+		public Task<MessagePatch> PostMessagePatchAsyncV2(string authToken, MessagePatchToPostV2 patch, string operationId = null)
+		{
+			if (authToken == null) throw new ArgumentNullException(nameof(authToken));
+			if (patch == null) throw new ArgumentNullException(nameof(patch));
+			
+			return diadocHttpApi.PostMessagePatchV2Async(authToken, patch, operationId);
+		}
+
 		public Task<MessagePatch> PostTemplatePatchAsync(string authToken, string boxId, string templateId, TemplatePatchToPost patch, string operationId = null)
 		{
 			if (authToken == null) throw new ArgumentNullException("authToken");

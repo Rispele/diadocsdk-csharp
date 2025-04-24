@@ -146,6 +146,13 @@ namespace Diadoc.Api
 			return PerformHttpRequestAsync<MessagePatchToPost, MessagePatch>(authToken, qsb.BuildPathAndQuery(), patch);
 		}
 
+		public Task<MessagePatch> PostMessagePatchV2Async(string authToken, MessagePatchToPostV2 patch, string operationId = null)
+		{
+			var qsb = new PathAndQueryBuilder("/V4/PostMessagePatch");
+			qsb.AddParameter("operationId", operationId);
+			return PerformHttpRequestAsync<MessagePatchToPostV2, MessagePatch>(authToken, qsb.BuildPathAndQuery(), patch);
+		}
+		
 		public Task<MessagePatch> PostTemplatePatchAsync(
 			string authToken,
 			string boxId,

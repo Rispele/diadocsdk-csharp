@@ -138,6 +138,13 @@ namespace Diadoc.Api
 			qsb.AddParameter("operationId", operationId);
 			return PerformHttpRequest<MessagePatchToPost, MessagePatch>(authToken, qsb.BuildPathAndQuery(), patch);
 		}
+		
+		public MessagePatch PostMessagePatchV2(string authToken, MessagePatchToPostV2 patch, string operationId = null)
+		{
+			var qsb = new PathAndQueryBuilder("/V4/PostMessagePatch");
+			qsb.AddParameter("operationId", operationId);
+			return PerformHttpRequest<MessagePatchToPostV2, MessagePatch>(authToken, qsb.BuildPathAndQuery(), patch);
+		}
 
 		public MessagePatch PostTemplatePatch(
 			string authToken,
