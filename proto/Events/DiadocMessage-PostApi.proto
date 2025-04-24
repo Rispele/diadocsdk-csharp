@@ -316,6 +316,44 @@ message MessagePatchToPost {
 	repeated EditingPatch EditingPatches = 24;
 }
 
+message MessagePatchToPostV2 {
+	required string BoxId = 1;
+	required string MessageId = 2;
+	repeated ReceiptAttachment Receipts = 3;
+	repeated CorrectionRequestAttachment CorrectionRequests = 4;
+	repeated DocumentSignature Signatures = 5;
+	repeated ResolutionAttachment Resolutions = 9;
+	repeated ResolutionRequestAttachment ResolutionRequests = 10;
+	repeated ResolutionRequestCancellationAttachment ResolutionRequestCancellations = 11;
+	repeated ResolutionRequestDenialAttachment ResolutionRequestDenials = 12;
+	repeated ResolutionRequestDenialCancellationAttachment ResolutionRequestDenialCancellations = 13;
+	repeated RevocationRequestAttachment RevocationRequests = 14;
+	repeated XmlSignatureRejectionAttachment XmlSignatureRejections = 15;
+	repeated CustomDataPatch CustomDataPatches = 16;
+	repeated ResolutionRouteAssignment ResolutionRouteAssignments = 17;
+	repeated SignatureVerification SignatureVerifications = 18;
+	repeated EditDocumentPacketCommand EditDocumentPacketCommands = 19;
+	repeated ResolutionRouteRemoval ResolutionRouteRemovals = 21;
+	repeated RecipientTitleAttachment RecipientTitles = 22;
+	repeated EditingPatch EditingPatches = 24;
+	repeated UniversalMessageAttachment UniversalMessages = 25;
+}
+
+message UniversalMessageAttachment {
+	required string ParentEntityId = 1;
+	required UniversalMessageCodeGroup CodeGroup = 2;
+	required UnsignedContent UniversalMessageContent = 3;
+	repeated string Labels = 4;
+}
+
+enum UniversalMessageCodeGroup {
+	UnknownCodeGroup = 0;
+	Receipt = 1;
+	AmendmentRequest = 2;
+	Rejection = 3;
+	InformationMessage = 4;
+}
+
 message EditingPatch {
 	required string ParentEntityId = 1;
 	required UnsignedContent Content = 2;
